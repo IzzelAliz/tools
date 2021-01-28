@@ -1,6 +1,8 @@
-## tools
+# tools
 
-Usage
+Java utility classes
+
+## Usage
 
 ```groovy
 repositories {
