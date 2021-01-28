@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'io.izzel'
+version '1.0.0'
+
+sourceSets {
+    codegen {
+        java {
+            srcDir 'src/codegen/java'
+        }
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    codegenImplementation 'com.squareup:javapoet:1.13.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "IzzelAliz"
+            url = uri("https://maven.izzel.io/releases")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        tools(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
