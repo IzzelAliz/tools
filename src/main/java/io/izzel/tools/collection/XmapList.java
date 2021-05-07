@@ -67,6 +67,15 @@ public class XmapList<A, B> extends AbstractList<B> {
     }
 
     public static <A, B> XmapList<A, B> create(List<A> list, Class<B> target, Func1<? super A, ? extends B> from, Func1<? super B, ? extends A> to) {
-        return new XmapList<>(list, from, to);
+        return list instanceof java.util.RandomAccess
+            ? new RandomAccess<>(list, from, to)
+            : new XmapList<>(list, from, to);
+    }
+
+    private static class RandomAccess<A, B> extends XmapList<A, B> {
+
+        public RandomAccess(List<A> list, Func1<? super A, ? extends B> from, Func1<? super B, ? extends A> to) {
+            super(list, from, to);
+        }
     }
 }
