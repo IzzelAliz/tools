@@ -1,13 +1,24 @@
 package io.izzel.tools.func;
 
+import java.lang.AssertionError;
 import java.lang.IllegalArgumentException;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.SuppressWarnings;
+import java.lang.Throwable;
 import java.util.function.BiFunction;
 
 public interface Func2<T1, T2, R> extends Func<R>, BiFunction<T1, T2, R> {
-  R apply(T1 t1, T2 t2);
+  R apply2(T1 t1, T2 t2) throws Throwable;
+
+  default R apply(T1 t1, T2 t2) {
+    try {
+      return apply2(t1,t2);
+    } catch (Throwable t) {
+      Func.throwException(t);
+      throw new AssertionError();
+    }
+  }
 
   @Override
   @SuppressWarnings("unchecked")

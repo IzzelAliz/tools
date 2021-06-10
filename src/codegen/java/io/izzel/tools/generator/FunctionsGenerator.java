@@ -57,13 +57,29 @@ public class FunctionsGenerator {
             )
             .addSuperinterface(ParameterizedTypeName.get(FUNC_TYPE, R_TYPE))
             .addMethod(
-                MethodSpec.methodBuilder("apply")
+                MethodSpec.methodBuilder("apply" + i)
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addParameters(
                         IntStream.rangeClosed(1, i)
                             .mapToObj(n -> ParameterSpec.builder(TypeVariableName.get("T" + n), "t" + n).build())
                             .collect(Collectors.toList())
-                    ).returns(R_TYPE).build()
+                    ).returns(R_TYPE).addException(ClassName.get(Throwable.class)).build()
+            )
+            .addMethod(
+                MethodSpec.methodBuilder("apply")
+                    .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addParameters(
+                        IntStream.rangeClosed(1, i)
+                            .mapToObj(n -> ParameterSpec.builder(TypeVariableName.get("T" + n), "t" + n).build())
+                            .collect(Collectors.toList())
+                    ).returns(R_TYPE)
+                    .beginControlFlow("try")
+                    .addStatement("return apply" + i + "(" + IntStream.rangeClosed(1, i).mapToObj(n -> "t" + n).collect(Collectors.joining(",")) + ")")
+                    .nextControlFlow("catch ($T t)", Throwable.class)
+                    .addStatement("$T.throwException(t)", FUNC_TYPE)
+                    .addStatement("throw new $T()", AssertionError.class)
+                    .endControlFlow()
+                    .build()
             )
             .addMethod(
                 applyArrayBuilder.build()
