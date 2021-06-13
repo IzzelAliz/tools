@@ -28,4 +28,8 @@ public interface Func2<T1, T2, R> extends Func<R>, BiFunction<T1, T2, R> {
     }
     return apply((T1) args[0],(T2) args[1]);
   }
+
+  static <T1, T2, T3> Func2<T1, T2, T3> y(Func1<Func2<T1, T2, T3>, Func2<T1, T2, T3>> comp) {
+    return comp.apply((p1,p2) -> y(comp).apply(p1,p2));
+  }
 }

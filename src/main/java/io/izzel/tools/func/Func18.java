@@ -29,4 +29,9 @@ public interface Func18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, 
     }
     return apply((T1) args[0],(T2) args[1],(T3) args[2],(T4) args[3],(T5) args[4],(T6) args[5],(T7) args[6],(T8) args[7],(T9) args[8],(T10) args[9],(T11) args[10],(T12) args[11],(T13) args[12],(T14) args[13],(T15) args[14],(T16) args[15],(T17) args[16],(T18) args[17]);
   }
+
+  static <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> Func18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> y(
+      Func1<Func18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>, Func18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>> comp) {
+    return comp.apply((p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18) -> y(comp).apply(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18));
+  }
 }

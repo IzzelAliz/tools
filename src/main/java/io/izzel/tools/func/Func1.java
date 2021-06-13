@@ -28,4 +28,8 @@ public interface Func1<T1, R> extends Func<R>, Function<T1, R> {
     }
     return apply((T1) args[0]);
   }
+
+  static <T1, T2> Func1<T1, T2> y(Func1<Func1<T1, T2>, Func1<T1, T2>> comp) {
+    return comp.apply((p1) -> y(comp).apply(p1));
+  }
 }

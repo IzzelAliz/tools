@@ -21,4 +21,8 @@ public interface Func0<R> extends Func<R> {
   default R applyArray(Object... args) {
     return apply();
   }
+
+  static <T1> Func0<T1> y(Func1<Func0<T1>, Func0<T1>> comp) {
+    return comp.apply(() -> y(comp).apply());
+  }
 }

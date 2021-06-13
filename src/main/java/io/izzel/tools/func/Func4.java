@@ -27,4 +27,9 @@ public interface Func4<T1, T2, T3, T4, R> extends Func<R> {
     }
     return apply((T1) args[0],(T2) args[1],(T3) args[2],(T4) args[3]);
   }
+
+  static <T1, T2, T3, T4, T5> Func4<T1, T2, T3, T4, T5> y(
+      Func1<Func4<T1, T2, T3, T4, T5>, Func4<T1, T2, T3, T4, T5>> comp) {
+    return comp.apply((p1,p2,p3,p4) -> y(comp).apply(p1,p2,p3,p4));
+  }
 }

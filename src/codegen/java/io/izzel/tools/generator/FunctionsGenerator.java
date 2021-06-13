@@ -15,6 +15,7 @@ import com.squareup.javapoet.TypeVariableName;
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -89,6 +90,16 @@ public class FunctionsGenerator {
         } else if (i == 2) {
             builder.addSuperinterface(ParameterizedTypeName.get(ClassName.get(BiFunction.class), TypeVariableName.get("T1"), TypeVariableName.get("T2"), R_TYPE));
         }
+        ParameterizedTypeName funcType = ParameterizedTypeName.get(funcTypeOf(i), IntStream.rangeClosed(1, i + 1).mapToObj(n -> TypeVariableName.get("T" + n)).toArray(TypeName[]::new));
+        builder.addMethod(
+            MethodSpec.methodBuilder("y")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .addParameter(ParameterizedTypeName.get(funcTypeOf(1), funcType, funcType), "comp")
+                .addTypeVariables(IntStream.rangeClosed(1, i + 1).mapToObj(n -> TypeVariableName.get("T" + n)).collect(Collectors.toList()))
+                .returns(funcType)
+                .addStatement("return comp.apply(($1N) -> y(comp).apply($1N))", IntStream.rangeClosed(1, i).mapToObj(n -> "p" + n).collect(Collectors.joining(",")))
+                .build()
+        );
 
         JavaFile.builder(PACKAGE, builder.build()).build()
             .writeTo(Paths.get("./src/main/java"));

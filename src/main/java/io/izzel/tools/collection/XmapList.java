@@ -72,7 +72,7 @@ public class XmapList<A, B> extends AbstractList<B> {
             : new XmapList<>(list, from, to);
     }
 
-    private static class RandomAccess<A, B> extends XmapList<A, B> {
+    private static class RandomAccess<A, B> extends XmapList<A, B> implements java.util.RandomAccess {
 
         public RandomAccess(List<A> list, Func1<? super A, ? extends B> from, Func1<? super B, ? extends A> to) {
             super(list, from, to);
